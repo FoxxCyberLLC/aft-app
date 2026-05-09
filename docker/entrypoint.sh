@@ -106,14 +106,18 @@ if [ ! -f "$SSL_DIR/cert.pem" ] || [ ! -f "$SSL_DIR/key.pem" ]; then
         > /dev/null 2>&1
     chmod 600 "$SSL_DIR/key.pem"
 fi
-# DOD CA bundle for client certificate verification (optional). When absent,
-# nginx serves an empty file so the directive doesn't fail; client cert auth
-# simply won't validate.
-if [ ! -f "$SSL_DIR/dod-ca-bundle.pem" ]; then
-    echo "" > "$SSL_DIR/dod-ca-bundle.pem"
+# DOD CA bundle for client certificate verification (optional). nginx's
+# ssl_client_certificate directive REQUIRES at least one PEM-encoded cert in
+# the file, so when no real DOD bundle is mounted we fall back to using the
+# server cert itself as a placeholder. With ssl_verify_client optional_no_ca
+# nginx still permits browsers without a CAC; real CAC validation happens in
+# the application layer via the X-Client-Cert-* headers.
+if [ ! -f "$SSL_DIR/dod-ca-bundle.pem" ] || ! grep -q 'BEGIN CERTIFICATE' "$SSL_DIR/dod-ca-bundle.pem"; then
+    echo "[entrypoint] No DOD CA bundle present; using server cert as placeholder"
+    cp "$SSL_DIR/cert.pem" "$SSL_DIR/dod-ca-bundle.pem"
 fi
 
 ###############################################################################
 # Step 5: hand off to supervisord
 ###############################################################################
-exec /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
+exec /usr/bin/supervisord --nodaemon -c /etc/supervisor/supervisord.conf
