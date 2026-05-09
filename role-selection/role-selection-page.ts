@@ -265,11 +265,19 @@ function render(userEmail: string, userName: string, availableRoles: UserRole[])
   </div>
   
   <script>
+      function readCsrfToken() {
+          const m = document.cookie.match(/(?:^|;\\s*)csrf=([^;]+)/);
+          return m ? decodeURIComponent(m[1]) : '';
+      }
+
       async function selectRole(role) {
           try {
               const response = await fetch('/api/select-role', {
                   method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
+                  headers: {
+                      'Content-Type': 'application/json',
+                      'X-CSRF-Token': readCsrfToken()
+                  },
                   body: JSON.stringify({ role })
               });
               
@@ -316,7 +324,7 @@ function render(userEmail: string, userName: string, availableRoles: UserRole[])
           const roleCards = document.querySelectorAll('.role-card');
           roleCards.forEach(card => {
               card.addEventListener('click', function() {
-                  const role = dataset.role;
+                  const role = card.dataset.role;
                   if (role) {
                       selectRole(role);
                   }
