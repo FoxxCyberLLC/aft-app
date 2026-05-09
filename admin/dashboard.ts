@@ -151,7 +151,7 @@ function getScript(): string {
 
     function displayRecentActivity(logs) {
       const activityHtml = logs.map(log => {
-        const date = new Date((log.timestamp as number) * 1000);
+        const date = new Date(Number(log.timestamp) * 1000);
         const statusClass = log.action.includes('SUCCESS') ? 'text-[var(--success)]' :
                            log.action.includes('FAILED') ? 'text-[var(--destructive)]' :
                            'text-[var(--warning)]';

@@ -27,7 +27,6 @@ export function createHtmlPage(title: string, content: string, script?: string):
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${title}</title>
     <link rel="stylesheet" href="/globals.css">
-    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
     <div class="page-wrapper">

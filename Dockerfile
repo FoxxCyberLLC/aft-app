@@ -45,6 +45,12 @@ RUN bun install --frozen-lockfile
 ###############################################################################
 FROM postgres:18
 
+# Pin PGDATA at the canonical location used by the entrypoint, supervisord
+# program definition, and docker-compose volume mount. The postgres:18 base
+# image sets PGDATA=/var/lib/postgresql/18/docker which would otherwise cause
+# initdb to land in a different path than `postgres -D ...` reads from.
+ENV PGDATA=/var/lib/postgresql/data
+
 # Install nginx, supervisord, tini, ca-certs, curl. Then drop the apt lists.
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
@@ -101,6 +107,11 @@ RUN chmod +x /usr/local/bin/aft-entrypoint.sh
 RUN mkdir -p /etc/aft/ssl /var/log/aft /var/log/supervisor /var/lib/postgresql/data \
     && chown -R postgres:postgres /var/lib/postgresql/data \
     && chmod 700 /var/lib/postgresql/data
+
+# Pre-flight: build the bundled stylesheet (Tailwind v4 utilities + curated
+# component CSS) so the running image ships /globals.css ready to serve.
+# globals.css is gitignored as a build artifact; src/input.css is the source.
+RUN bun run build:css
 
 # Pre-flight: build the app to fail-fast on type errors at image build time.
 RUN bun build index.ts --target=bun --outdir /tmp/aft-build > /dev/null \

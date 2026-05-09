@@ -1,0 +1,28 @@
+/*
+ * AFT stylesheet — single bundle compiled to /globals.css.
+ *
+ *   src/input.css       (this file, the entrypoint)
+ *   src/components.css  (curated, hand-written component classes + :root vars)
+ *   ../globals.css      (build artifact, served by server/static-handler.ts)
+ *
+ * Build:  bun run build:css   (runs `tailwindcss -i src/input.css -o globals.css`)
+ *
+ * Tailwind v4 scans @source paths and emits only the utilities the project
+ * actually uses. The components import follows the Tailwind import so its
+ * rules win the cascade over Preflight where they overlap (e.g. :root vars).
+ */
+@import "tailwindcss";
+
+@source "../**/*.{ts,tsx,html}";
+@source not "../node_modules";
+@source not "../dist";
+@source not "../.worktrees";
+
+/*
+ * components.css is imported into Tailwind's `components` layer so the
+ * universal reset (* { margin:0; padding:0 }) and other component rules sit
+ * BELOW @layer utilities in the cascade. Without `layer(components)` the
+ * reset lands in the unlayered (top-priority) tier and silently overrides
+ * every padding/margin utility (px-*, py-*, m-*, etc).
+ */
+@import "./components.css" layer(components);
