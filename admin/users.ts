@@ -19,7 +19,7 @@ async function renderUsersPage(user: AdminUser): Promise<string> {
     SELECT
       u.*,
       COUNT(ur.id) as role_count,
-      GROUP_CONCAT(ur.role) as roles
+      STRING_AGG(ur.role, ',') as roles
     FROM users u
     LEFT JOIN user_roles ur ON u.id = ur.user_id AND ur.is_active = TRUE
     GROUP BY u.id
