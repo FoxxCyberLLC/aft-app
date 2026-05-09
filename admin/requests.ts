@@ -398,7 +398,7 @@ function getScript(): string {
               </div>
               <div>
                 <span class="font-medium text-[var(--muted-foreground)]">Created:</span>
-                <div class="text-[var(--foreground)]">\${new Date((request.created_at as number) * 1000).toLocaleDateString()}</div>
+                <div class="text-[var(--foreground)]">\${new Date(Number(request.created_at) * 1000).toLocaleDateString()}</div>
               </div>
             </div>
           </div>
