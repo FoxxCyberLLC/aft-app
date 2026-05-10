@@ -21,7 +21,9 @@
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "typecheck": "tsc --noEmit",
-    "seed:users": "bun scripts/seed-users.ts"
+    "seed:users": "bun scripts/seed-users.ts",
+    "seed:requests": "bun scripts/seed-requests.ts",
+    "seed:all": "bun run seed:users && bun run seed:requests"
   },
   "devDependencies": {
     "@biomejs/biome": "^2",
