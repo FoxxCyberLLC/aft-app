@@ -142,6 +142,7 @@ function _renderDataManagementPage(_user: unknown): Response {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Data Management - AFT DTA Portal</title>
         <link rel="stylesheet" href="/globals.css">
+  <script src="/lib/csrf.js"></script>
     </head>
     <body class="bg-[var(--background)] text-[var(--foreground)]">
         <div class="min-h-screen flex items-center justify-center">
@@ -217,6 +218,7 @@ function _renderReportsPage(_user: unknown): Response {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Reports - AFT DTA Portal</title>
         <link rel="stylesheet" href="/globals.css">
+  <script src="/lib/csrf.js"></script>
     </head>
     <body class="bg-[var(--background)] text-[var(--foreground)]">
         <div class="min-h-screen flex items-center justify-center">
@@ -295,6 +297,7 @@ function renderTransferMonitorPage(_user: unknown, requestId?: number): Response
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${title} - AFT DTA Portal</title>
         <link rel="stylesheet" href="/globals.css">
+  <script src="/lib/csrf.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body class="bg-[var(--background)] text-[var(--foreground)]">
@@ -400,6 +403,7 @@ function _renderRequestDetailsPage(_user: unknown, requestId: number): Response 
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Request ${requestId} - AFT DTA Portal</title>
         <link rel="stylesheet" href="/globals.css">
+  <script src="/lib/csrf.js"></script>
     </head>
     <body class="bg-[var(--background)] text-[var(--foreground)]">
         <div class="min-h-screen flex items-center justify-center">
