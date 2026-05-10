@@ -237,9 +237,8 @@ async function main(): Promise<void> {
       dta_id: dta?.id ?? null,
       sme_id: sme?.id ?? null,
       assigned_sme_id: r.status === AFTStatus.PENDING_SME ? (sme?.id ?? null) : null,
-      media_custodian_id: r.status === AFTStatus.PENDING_MEDIA_CUSTODIAN
-        ? (custodian?.id ?? null)
-        : null,
+      media_custodian_id:
+        r.status === AFTStatus.PENDING_MEDIA_CUSTODIAN ? (custodian?.id ?? null) : null,
       status: r.status,
       submitted_at: submittedAt,
       requestor_name: 'Renee Requestor',
