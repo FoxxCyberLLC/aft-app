@@ -41,6 +41,7 @@ function render(userEmail: string, userName: string, availableRoles: UserRole[])
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AFT - Role Selection</title>
   <link rel="stylesheet" href="/globals.css">
+  <script src="/lib/csrf.js"></script>
   <style>
       .role-selection-container {
           min-height: 100vh;

@@ -38,7 +38,11 @@ class EmailService {
   private loadConfig(): EmailConfig {
     const env = process.env;
     return {
-      host: env.SMTP_HOST || 'smtp.gmail.com',
+      // host stays empty when SMTP_HOST is unset; initializeSMTPClient() reads
+      // that as "no SMTP configured" and notifications no-op cleanly. We do
+      // NOT silently fall back to a public SMTP relay - that masks misconfig
+      // and breaks air-gapped deployments.
+      host: env.SMTP_HOST || '',
       port: parseInt(env.SMTP_PORT || '587', 10),
       secure: env.SMTP_SECURE === 'true',
       auth:
@@ -54,6 +58,10 @@ class EmailService {
   }
 
   private initializeSMTPClient() {
+    if (!this.config.host) {
+      console.log('SMTP_HOST is not set - email notifications are disabled.');
+      return;
+    }
     try {
       this.smtpClient = new SMTPClient({
         host: this.config.host,
@@ -77,7 +85,7 @@ class EmailService {
     text?: string,
   ): Promise<boolean> {
     if (!this.smtpClient) {
-      console.error('SMTP client not initialized');
+      // Expected when SMTP_HOST is unset (notifications disabled).
       return false;
     }
 
@@ -353,7 +361,7 @@ class EmailService {
 
   async testConnection(): Promise<boolean> {
     if (!this.smtpClient) {
-      console.error('SMTP client not initialized');
+      // Expected when SMTP_HOST is unset (notifications disabled).
       return false;
     }
 

@@ -102,6 +102,7 @@ function accessDenied(message: string = 'Access denied'): Response {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Access Denied</title>
   <link rel="stylesheet" href="/globals.css">
+  <script src="/lib/csrf.js"></script>
 </head>
 <body>
   <div class="min-h-screen bg-[var(--muted)] flex items-center justify-center p-4">
